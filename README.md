@@ -19,18 +19,21 @@ docker run --rm -it drpsychick/docker-influxdb:latest --export > influxdb.env
 ### 2 configure it
 Edit settings in `influxdb.env` to your needs:
 ```
-IFX_GLOBAL=reporting-disabled = true\nbind-address = "127.0.0.1:8088"
+IFX_GLOBAL=reporting-disabled = true
 ```
 
 ### 3 test and run it
 Run in a separate teminal
 ```
 docker run --rm -it --env-file influxdb.env --name influxdb-1 drpsychick/docker-influxdb:latest --test
-docker run --rm -it --env-file influxdb.env --name influxdb-1 drpsychick/docker-influxdb:latest influxdb --test
-docker run --rm -it --env-file influxdb.env --name influxdb-1 drpsychick/docker-influxdb:latest
+docker run --rm -it --env-file influxdb.env --name influxdb-1 drpsychick/docker-influxdb:latest influxd config
+docker run --rm -it --env-file influxdb.env --name influxdb-1 --publish 8086:8086 drpsychick/docker-influxdb:latest
 ```
 
-Check your influxdb for new input
+Test the connection
+```
+curl http://localhost:8086/query --data-urlencode "q=SHOW DATABASES"
+```
 
 ## Configure it to your needs
 You can use any `IFX_` variable in your `influxdb.env`. They will be added to the config during container startup.
@@ -44,5 +47,5 @@ IFX_COORDINATOR_BASE=write-timeout = "30s"\nmax-concurrent-queries = 10\nquery-t
 **Beware**:
 
 Docker only support *simple variables*. No ", no ' and especially no newlines in variables.
-To define a multiline variable, look at the `IFX_DATA` variable in the example output.
+To define a multiline variable, look at the `IFX_COORDINATOR_BASE` variable in the example.
 

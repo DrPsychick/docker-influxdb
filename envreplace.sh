@@ -21,7 +21,7 @@ if [ "$1" = "--test" ]; then
   for v in $(set |grep ^${conf_var_prefix}|sed -e 's/^\('${conf_var_prefix}'[^=]*\).*/\1/' |sort |tr '\n' ' ' ); do
     [ -z "$v" ] && continue
     value=$(eval echo -n \""\$$v"\")
-    echo -e "$v=\"$value\""
+    echo -e "$v='$value'"
   done
   exit 0
 fi

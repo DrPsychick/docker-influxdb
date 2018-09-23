@@ -17,9 +17,9 @@ docker run --rm -it drpsychick/docker-influxdb:latest --export > influxdb.env
 ```
 
 ### 2 configure it
-Edit at least your hostname and output (influxdb or sth. else) in `influxdb.env`:
+Edit settings in `influxdb.env` to your needs:
 ```
-IFX_GLOBAL='reporting-disabled = false\nbind-address = "127.0.0.1:8088"'
+IFX_GLOBAL=reporting-disabled = true\nbind-address = "127.0.0.1:8088"
 ```
 
 ### 3 test and run it
@@ -37,8 +37,8 @@ You can use any `IFX_` variable in your `influxdb.env`. They will be added to th
 
 ### Example 
 ```
-IFX_COORDINATOR='[coordinator]'
-IFX_COORDINATOR_BASE='write-timeout = "30s"\nmax-concurrent-queries = 10\nquery-timeout = "600s"\nlog-queries-after = "10s"'
+IFX_COORDINATOR=[coordinator]
+IFX_COORDINATOR_BASE=write-timeout = "30s"\nmax-concurrent-queries = 10\nquery-timeout = "600s"\nlog-queries-after = "10s"
 ```
 
 **Beware**:

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -e 
 
 . default.env
@@ -33,7 +33,7 @@ if [ "$1" = "--export" ]; then
     [ -z "$v" ] && continue
     # get value and replace all newlines with \n (docker only supports single line variables)
     value=$(eval echo -n \""\$$v"\")
-    echo "$v='$(echo -n "$value" | awk '{if (NR>1) {printf "%s\\n", $0}} END {print $0}')'"
+    echo "$v=$(echo -n "$value" | awk '{if (NR>1) {printf "%s\\n", $0}} END {print $0}')"
   done
   exit 0
 fi

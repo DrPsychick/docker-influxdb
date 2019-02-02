@@ -1,14 +1,15 @@
+dist: xenial
 language: bash
 services: docker
 
 env:
   global:
-  - IMAGE=drpsychick/docker-influxdb
+    - IMAGE=drpsychick/docker-influxdb
   matrix:
-  - ALPINE_VERSION=alpine
-  - ALPINE_VERSION=1.7.3-alpine
-  - ALPINE_VERSION=1.6.5-alpine
-  - ALPINE_VERSION=1.5.4-alpine
+    - ALPINE_VERSION=alpine
+    - ALPINE_VERSION=1.7.3-alpine
+    - ALPINE_VERSION=1.6.5-alpine
+    - ALPINE_VERSION=1.5.4-alpine
 
 before_script:
   - docker build -t test --build-arg ALPINE_VERSION=$ALPINE_VERSION .
@@ -28,9 +29,21 @@ script:
     docker run test influxd version
 
 after_success:
+  # trigger docker hub 'dev' build
   - >
-    [ $TRAVIS_BRANCH = "master" -a $TRAVIS_PULL_REQUEST = "false" ] && {
-    if [ "$ALPINE_VERSION" != "alpine" ]; then 
+    if [ "$TRAVIS_BRANCH" = "develop" -a "$ALPINE_VERSION" = "alpine" ]; then
+    curl -H "Content-Type: application/json" --data '{"source_type": "Branch", "source_name": "develop"}'
+    -X POST "$DOCKERHUB_TRIGGER";
+    fi
+  # trigger docker hub 'latest' build
+  # create and push new branch+tag when new version emerges
+  # issue: never triggers rebuild of a branch - how to detect changes?
+  - >
+    if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then
+    if [ "$ALPINE_VERSION" = "alpine" ]; then
+    curl -H "Content-Type: application/json" --data '{"source_type": "Branch", "source_name": "master"}'
+    -X POST "$DOCKERHUB_TRIGGER";
+    else
     branch="${ALPINE_VERSION}";
     exists="$(test -n "$(git branch -r |grep "$branch")" && echo "exists" || echo "missing")";
     echo "Branch: $branch ($exists)";
@@ -42,5 +55,5 @@ after_success:
     git add Dockerfile && git commit -m "automated tag branch $branch" && git push -u origin $branch;
     git tag $branch && git push --tags;
     fi;
+    fi;
     fi
-    }

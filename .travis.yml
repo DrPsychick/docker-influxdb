@@ -14,10 +14,10 @@ env:
     - PLATFORMS=linux/amd64
     - DOCKER_CLI_EXPERIMENTAL=enabled
   matrix:
-    - ALPINE_VERSION=alpine
-    - ALPINE_VERSION=1.7.3-alpine
-    - ALPINE_VERSION=1.6.5-alpine
-    - ALPINE_VERSION=1.5.4-alpine
+    - INFLUXDB_VERSION=alpine
+    - INFLUXDB_VERSION=1.8-alpine
+    - INFLUXDB_VERSION=1.7-alpine
+    - INFLUXDB_VERSION=1.6-alpine
 
 before_script:
   # upgrade to latest docker-ce from repo
@@ -32,14 +32,14 @@ before_script:
   - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
   - docker buildx create --name xbuilder --use
   - docker buildx inspect --bootstrap
-  - docker buildx build --progress plain --platform $PLATFORMS --build-arg UBUNTU_VERSION=$UBUNTU_VERSION -t $IMAGE .
+  - docker buildx build --progress plain --platform $PLATFORMS --build-arg INLFUXDB_VERSION=$INFLUXDB_VERSION -t $IMAGE .
   # load a single image for local tests, see https://github.com/docker/buildx/issues/59
   - docker buildx build --progress plain --platform linux/amd64 -t $IMAGE --load .
-  - export VERSION=$(docker run --rm $IMAGE influxd version |awk '$1 == "InfluxDB" { print $2; exit }' |tr -d 'v')
+  - export ALPINE_VERSION=$(docker run --rm $IMAGE cat /etc/alpine-version)
 
 script:
   # test always passes
-  - echo "Alpine $ALPINE_VERSION influxd $VERSION"
+  - echo "Alpine $ALPINE_VERSION influxd $INFLUXDB_VERSION"
   - >
     echo "Running tests...";
     docker run --rm $IMAGE influxd version

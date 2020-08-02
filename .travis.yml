@@ -1,10 +1,18 @@
-dist: xenial
-language: bash
-services: docker
+dist: bionic
+addons:
+  apt:
+    sources:
+      - sourceline: 'deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable'
+        key_url: 'https://download.docker.com/linux/ubuntu/gpg'
+    update: true
+sudo: required
 
+# DOCKER_USER and DOCKER_PASS is set in travis
 env:
   global:
-    - IMAGE=drpsychick/docker-influxdb
+    - IMAGE=drpsychick/influxdb
+    - PLATFORMS=linux/amd64
+    - DOCKER_CLI_EXPERIMENTAL=enabled
   matrix:
     - ALPINE_VERSION=alpine
     - ALPINE_VERSION=1.7.3-alpine
@@ -12,47 +20,30 @@ env:
     - ALPINE_VERSION=1.5.4-alpine
 
 before_script:
-  - docker build -t test --build-arg ALPINE_VERSION=$ALPINE_VERSION .
-  - VERSION=$(docker run --rm test influxd version |awk '$1 == "InfluxDB" { print $2; exit }' |tr -d 'v')
-  - eval $(ssh-agent -s)
-  - echo "$DEPLOY_PRIVATE_KEY" | ssh-add - && ssh-add -l
-  - git config --global user.email "github@drsick.net"
-  - git config --global user.name "TAG bot"
-  - git remote set-url origin "git@github.com:DrPsychick/docker-influxdb.git"
-
+  # upgrade to latest docker-ce from repo
+  - sudo apt-get -y install docker-ce
+  # enable experimental in docker daemon
+  - docker_conf=$(sudo cat /etc/docker/daemon.json |jq '. + {"experimental":"enabled"}')
+  - echo "$docker_conf" | sudo tee /etc/docker/daemon.json
+  - sudo service docker start
+  - docker version
+  - docker buildx version
+  # build the image for all platforms
+  - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+  - docker buildx create --name xbuilder --use
+  - docker buildx inspect --bootstrap
+  - docker buildx build --progress plain --platform $PLATFORMS --build-arg UBUNTU_VERSION=$UBUNTU_VERSION -t $IMAGE .
+  # load a single image for local tests, see https://github.com/docker/buildx/issues/59
+  - docker buildx build --progress plain --platform linux/amd64 -t $IMAGE --load .
+  - export VERSION=$(docker run --rm $IMAGE influxd version |awk '$1 == "InfluxDB" { print $2; exit }' |tr -d 'v')
 
 script:
   # test always passes
   - echo "Alpine $ALPINE_VERSION influxd $VERSION"
   - >
     echo "Running tests...";
-    docker run test influxd version
+    docker run --rm $IMAGE influxd version
 
+# push images to docker hub
 after_success:
-  # trigger docker hub 'dev' build
-  - >
-    if [ "$TRAVIS_BRANCH" = "develop" -a "$ALPINE_VERSION" = "alpine" ]; then
-    curl -H "Content-Type: application/json" --data '{"source_type": "Branch", "source_name": "develop"}'
-    -X POST "$DOCKERHUB_TRIGGER";
-    fi
-  # trigger docker hub 'latest' build
-  # create and push new branch+tag when new version emerges
-  # issue: never triggers rebuild of a branch - how to detect changes?
-  - >
-    if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then
-    if [ "$ALPINE_VERSION" = "alpine" ]; then
-    curl -H "Content-Type: application/json" --data '{"source_type": "Branch", "source_name": "master"}'
-    -X POST "$DOCKERHUB_TRIGGER";
-    else
-    branch="${ALPINE_VERSION}";
-    echo "Branch: $branch";
-    git checkout -b $branch;
-    git pull origin $branch;
-    git merge -X theirs --no-edit --no-commit master;
-    sed -i -e "s/ALPINE_VERSION=.*/ALPINE_VERSION=$ALPINE_VERSION/" Dockerfile;
-    git diff Dockerfile;
-    docker build -t $IMAGE:$branch --build-arg ALPINE_VERSION=$ALPINE_VERSION . || exit 1;
-    git commit -a -m "automated build on $branch";
-    git push -u origin $branch;
-    fi;
-    fi
+  - bash deploy.sh

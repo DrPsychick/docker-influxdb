@@ -1,5 +1,5 @@
-ARG ALPINE_VERSION=alpine
-FROM influxdb:$ALPINE_VERSION
+ARG INFLUXDB_VERSION=alpine
+FROM influxdb:$INFLUXDB_VERSION
 
 COPY default.env /
 COPY influxdb.conf.tmpl /

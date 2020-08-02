@@ -1,6 +1,7 @@
-# [Docker image: docker-influxdb](https://hub.docker.com/r/drpsychick/docker-influxdb/)
+# [Docker image: influxdb](https://hub.docker.com/r/drpsychick/influxdb/)
 
-[![DockerHub build status](https://img.shields.io/docker/build/drpsychick/docker-influxdb.svg)](https://hub.docker.com/r/drpsychick/docker-influxdb/builds/) [![DockerHub build](https://img.shields.io/docker/automated/drpsychick/docker-influxdb.svg)](https://hub.docker.com/r/drpsychick/docker-influxdb/builds/) [![license](https://img.shields.io/github/license/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb/blob/master/LICENSE) [![DockerHub pulls](https://img.shields.io/docker/pulls/drpsychick/docker-influxdb.svg)](https://hub.docker.com/r/drpsychick/docker-influxdb/) [![DockerHub stars](https://img.shields.io/docker/stars/drpsychick/docker-influxdb.svg)](https://hub.docker.com/r/drpsychick/docker-influxdb/) [![GitHub stars](https://img.shields.io/github/stars/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb) [![Contributors](https://img.shields.io/github/contributors/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb/graphs/contributors)
+[![Docker image](https://img.shields.io/docker/image-size/drpsychick/influxdb?sort=date)](https://hub.docker.com/r/drpsychick/influxdb/tags) [![DockerHub build status](https://img.shields.io/docker/build/drpsychick/influxdb.svg)](https://hub.docker.com/r/drpsychick/influxdb/builds/) 
+[![license](https://img.shields.io/github/license/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb/blob/master/LICENSE) [![DockerHub pulls](https://img.shields.io/docker/pulls/drpsychick/influxdb.svg)](https://hub.docker.com/r/drpsychick/influxdb/) [![DockerHub stars](https://img.shields.io/docker/stars/drpsychick/influxdb.svg)](https://hub.docker.com/r/drpsychick/influxdb/) [![GitHub stars](https://img.shields.io/github/stars/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb) [![Contributors](https://img.shields.io/github/contributors/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb/graphs/contributors)
 
 [![GitHub issues](https://img.shields.io/github/issues/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb/issues) [![GitHub closed issues](https://img.shields.io/github/issues-closed/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb/issues?q=is%3Aissue+is%3Aclosed) [![GitHub pull requests](https://img.shields.io/github/issues-pr/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb/pulls) [![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb/pulls?q=is%3Apr+is%3Aclosed)
 
@@ -12,8 +13,8 @@ Try it in 3 steps
 
 ### 1 create your own influxdb.env
 ```
-docker run --rm -it drpsychick/docker-influxdb:latest --test
-docker run --rm -it drpsychick/docker-influxdb:latest --export > influxdb.env
+docker run --rm -it drpsychick/influxdb:latest --test
+docker run --rm -it drpsychick/influxdb:latest --export > influxdb.env
 ```
 
 ### 2 configure it
@@ -25,9 +26,9 @@ IFX_GLOBAL=reporting-disabled = true
 ### 3 test and run it
 Run in a separate teminal
 ```
-docker run --rm -it --env-file influxdb.env --name influxdb-1 drpsychick/docker-influxdb:latest --test
-docker run --rm -it --env-file influxdb.env --name influxdb-1 drpsychick/docker-influxdb:latest influxd config
-docker run --rm -it --env-file influxdb.env --name influxdb-1 --publish 8086:8086 drpsychick/docker-influxdb:latest
+docker run --rm -it --env-file influxdb.env --name influxdb-1 drpsychick/influxdb:latest --test
+docker run --rm -it --env-file influxdb.env --name influxdb-1 drpsychick/influxdb:latest influxd config
+docker run --rm -it --env-file influxdb.env --name influxdb-1 --publish 8086:8086 drpsychick/influxdb:latest
 ```
 
 Test the connection

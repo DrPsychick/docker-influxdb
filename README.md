@@ -1,7 +1,12 @@
 # [Docker image: influxdb](https://hub.docker.com/r/drpsychick/influxdb/)
 
-[![Docker image](https://img.shields.io/docker/image-size/drpsychick/influxdb?sort=date)](https://hub.docker.com/r/drpsychick/influxdb/tags) [![DockerHub build status](https://img.shields.io/docker/cloud/build/drpsychick/influxdb.svg)](https://hub.docker.com/r/drpsychick/influxdb/builds/) 
-[![license](https://img.shields.io/github/license/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb/blob/master/LICENSE) [![DockerHub pulls](https://img.shields.io/docker/pulls/drpsychick/influxdb.svg)](https://hub.docker.com/r/drpsychick/influxdb/) [![DockerHub stars](https://img.shields.io/docker/stars/drpsychick/influxdb.svg)](https://hub.docker.com/r/drpsychick/influxdb/) [![GitHub stars](https://img.shields.io/github/stars/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb) [![Contributors](https://img.shields.io/github/contributors/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb/graphs/contributors)
+[![Docker image](https://img.shields.io/docker/image-size/drpsychick/influxdb?sort=date)](https://hub.docker.com/r/drpsychick/influxdb/tags) 
+[![Build Status](https://travis-ci.com/DrPsychick/docker-influxdb.svg?branch=master)](https://travis-ci.com/DrPsychick/docker-influxdb)
+[![license](https://img.shields.io/github/license/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb/blob/master/LICENSE) 
+[![DockerHub pulls](https://img.shields.io/docker/pulls/drpsychick/influxdb.svg)](https://hub.docker.com/r/drpsychick/influxdb/) 
+[![DockerHub stars](https://img.shields.io/docker/stars/drpsychick/influxdb.svg)](https://hub.docker.com/r/drpsychick/influxdb/) 
+[![GitHub stars](https://img.shields.io/github/stars/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb) 
+[![Contributors](https://img.shields.io/github/contributors/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb/graphs/contributors)
 
 [![GitHub issues](https://img.shields.io/github/issues/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb/issues) [![GitHub closed issues](https://img.shields.io/github/issues-closed/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb/issues?q=is%3Aissue+is%3Aclosed) [![GitHub pull requests](https://img.shields.io/github/issues-pr/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb/pulls) [![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb/pulls?q=is%3Apr+is%3Aclosed)
 [![Paypal](https://img.shields.io/badge/donate-paypal-00457c.svg?logo=paypal)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=FTXDN7LCDWUEA&source=url)

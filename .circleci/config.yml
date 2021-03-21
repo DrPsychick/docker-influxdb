@@ -12,7 +12,7 @@ aliases:
       - run:
           name: Prepare docker buildx
           command: |
-            apk add --no-cache jq openrc
+            apk add --no-cache jq openrc docker
             mkdir -p /etc/docker
             docker_conf=$( (cat /etc/docker/daemon.json 2>/dev/null || echo "{}") |jq '. + {"experimental":"enabled"}')
             echo "$docker_conf" | tee /etc/docker/daemon.json

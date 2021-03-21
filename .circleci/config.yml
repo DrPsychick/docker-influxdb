@@ -1,3 +1,7 @@
+# Required variables
+# REPO, IMAGE_NAME
+# PLATFORMS
+# DOCKER_USER, DOCKER_PASS
 version: 2.1
 aliases:
   - &docker

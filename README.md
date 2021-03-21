@@ -2,7 +2,7 @@
 influxdb based on the official influxdb:alpine images, multiple architectures (amd64,arm64/v8), cloud ready, fully configurable through environment
 
 [![Docker image](https://img.shields.io/docker/image-size/drpsychick/influxdb?sort=date)](https://hub.docker.com/r/drpsychick/influxdb/tags) 
-[![Build Status](https://travis-ci.com/DrPsychick/docker-influxdb.svg?branch=master)](https://travis-ci.com/DrPsychick/docker-influxdb)
+[![Build Status](https://img.shields.io/circleci/build/github/DrPsychick/docker-influxdb)](https://app.circleci.com/pipelines/github/DrPsychick/docker-influxdb)
 [![license](https://img.shields.io/github/license/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb/blob/master/LICENSE) 
 [![DockerHub pulls](https://img.shields.io/docker/pulls/drpsychick/influxdb.svg)](https://hub.docker.com/r/drpsychick/influxdb/) 
 [![DockerHub stars](https://img.shields.io/docker/stars/drpsychick/influxdb.svg)](https://hub.docker.com/r/drpsychick/influxdb/) 

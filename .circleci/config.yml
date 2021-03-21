@@ -14,7 +14,7 @@ aliases:
           command: |
             apk add --no-cache jq
             docker_conf=$(sudo cat /etc/docker/daemon.json |jq '. + {"experimental":"enabled"}')
-            echo "$docker_conf" | sudo tee /etc/docker/daemon.json
+            echo "$docker_conf" | tee /etc/docker/daemon.json
             docker version
             docker buildx version
             docker run --rm --privileged multiarch/qemu-user-static --reset -p yes

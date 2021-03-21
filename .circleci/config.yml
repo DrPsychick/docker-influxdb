@@ -11,6 +11,8 @@ parameters:
 aliases:
   - &docker
       - image: docker:dind
+  - &docker-ubuntu
+    - - image: ubuntu:latest
   - &steps
       - checkout
       - setup_remote_docker
@@ -48,7 +50,7 @@ jobs:
   build_alpine:
     environment:
       INFLUXDB_VERSION: alpine
-#    docker: *docker
+    docker: *docker-ubuntu
     steps: *steps
   build_18-alpine:
     environment:

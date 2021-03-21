@@ -1,8 +1,7 @@
 # Required variables
 # REPO, IMAGE_NAME
-# PLATFORMS
+# PLATFORMS = linux/amd64,linux/arm64/v8,...
 # DOCKER_USER, DOCKER_PASS
-
 version: 2.1
 orbs:
   docker-buildx: sensu/docker-buildx@1.1.1
@@ -41,13 +40,13 @@ aliases:
       - run:
           name: Build all platforms
           command: |
-            docker buildx build --progress plain --platform $PLATFORMS --build-arg INLFUXDB_VERSION=$INFLUXDB_VERSION -t $REPO/$IMAGE_NAME:$INFLUXDB_VERSION .
+            docker buildx build --progress plain --platform $PLATFORMS --build-arg INLFUXDB_VERSION=$INFLUXDB_VERSION -t $REPO/$IMAGE_NAME:$TAG .
       - run:
           name: Build and push all platforms
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin &> /dev/null || exit 1
-              docker buildx build --progress plain --platform $PLATFORMS --build-arg INLFUXDB_VERSION=$INFLUXDB_VERSION -t $REPO/$IMAGE_NAME:$INFLUXDB_VERSION --push .
+              docker buildx build --progress plain --platform $PLATFORMS --build-arg INLFUXDB_VERSION=$INFLUXDB_VERSION -t $REPO/$IMAGE_NAME:$TAG --push .
             fi
 jobs:
   build_alpine:
@@ -57,6 +56,7 @@ jobs:
         type: string
     environment:
       INFLUXDB_VERSION: alpine
+      TAG: latest
     docker: *docker
     steps: *steps
   build_18-alpine:
@@ -66,6 +66,7 @@ jobs:
         type: string
     environment:
       INFLUXDB_VERSION: 1.8-alpine
+      TAG: 1.8-alpine
     docker: *docker
     steps: *steps
   build_17-alpine:
@@ -75,6 +76,7 @@ jobs:
         type: string
     environment:
       INFLUXDB_VERSION: 1.7-alpine
+      TAG: 1.7-alpine
     docker: *docker
     steps: *steps
   build_16-alpine:
@@ -84,6 +86,7 @@ jobs:
         type: string
     environment:
       INFLUXDB_VERSION: 1.6-alpine
+      TAG: 1.6-alpine
     docker: *docker
     steps: *steps
 

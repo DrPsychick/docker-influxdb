@@ -74,7 +74,11 @@ workflows:
     jobs:
       - docker-buildx/install:
           version: 0.5.1
-      - build_16-alpine
-      - build_17-alpine
-      - build_18-alpine
-      - build_alpine
+      - build_16-alpine:
+          version: 0.5.1
+      - build_17-alpine:
+          version: 0.5.1
+      - build_18-alpine:
+          version: 0.5.1
+      - build_alpine:
+          version: 0.5.1

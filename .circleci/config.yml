@@ -37,17 +37,17 @@ jobs:
       INFLUXDB_VERSION: alpine
     docker: *docker
     steps: *steps
-  build_1.8-alpine:
+  build_18-alpine:
     environment:
       INFLUXDB_VERSION: 1.8-alpine
     docker: *docker
     steps: *steps
-  build_1.7-alpine:
+  build_17-alpine:
     environment:
       INFLUXDB_VERSION: 1.7-alpine
     docker: *docker
     steps: *steps
-  build_1.6-alpine:
+  build_16-alpine:
     environment:
       INFLUXDB_VERSION: 1.6-alpine
     docker: *docker
@@ -57,7 +57,7 @@ workflows:
   version: 2
   build:
     jobs:
-      - build_1.6-alpine
-      - build_1.7-alpine
-      - build_1.8-alpine
+      - build_16-alpine
+      - build_17-alpine
+      - build_18-alpine
       - build_alpine

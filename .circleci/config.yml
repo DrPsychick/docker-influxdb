@@ -59,6 +59,26 @@ jobs:
       TAG: latest
     docker: *docker
     steps: *steps
+  build_20-alpine:
+    parameters:
+      version:
+        default: 0.5.1
+        type: string
+    environment:
+      INFLUXDB_VERSION: 2.0-alpine
+      TAG: 2.0-alpine
+    docker: *docker
+    steps: *steps
+  build_19-alpine:
+    parameters:
+      version:
+        default: 0.5.1
+        type: string
+    environment:
+      INFLUXDB_VERSION: 1.9-alpine
+      TAG: 1.9-alpine
+    docker: *docker
+    steps: *steps
   build_18-alpine:
     parameters:
       version:
@@ -67,26 +87,6 @@ jobs:
     environment:
       INFLUXDB_VERSION: 1.8-alpine
       TAG: 1.8-alpine
-    docker: *docker
-    steps: *steps
-  build_17-alpine:
-    parameters:
-      version:
-        default: 0.5.1
-        type: string
-    environment:
-      INFLUXDB_VERSION: 1.7-alpine
-      TAG: 1.7-alpine
-    docker: *docker
-    steps: *steps
-  build_16-alpine:
-    parameters:
-      version:
-        default: 0.5.1
-        type: string
-    environment:
-      INFLUXDB_VERSION: 1.6-alpine
-      TAG: 1.6-alpine
     docker: *docker
     steps: *steps
 
@@ -102,13 +102,13 @@ workflows:
               only:
                 - master
     jobs:
-      - build_16-alpine
-      - build_17-alpine
       - build_18-alpine
+      - build_19-alpine
+      - build_20-alpine
       - build_alpine
   build:
     jobs:
-      - build_16-alpine
-      - build_17-alpine
       - build_18-alpine
+      - build_19-alpine
+      - build_20-alpine
       - build_alpine

@@ -1,5 +1,5 @@
 # [Docker image: influxdb](https://hub.docker.com/r/drpsychick/influxdb/)
-influxdb based on the official influxdb:alpine images, multiple architectures (arm64,v7,v8), cloud ready, fully configurable through environment
+influxdb based on the official influxdb:alpine images, multiple architectures (amd64,arm64/v8), cloud ready, fully configurable through environment
 
 [![Docker image](https://img.shields.io/docker/image-size/drpsychick/influxdb?sort=date)](https://hub.docker.com/r/drpsychick/influxdb/tags) 
 [![Build Status](https://travis-ci.com/DrPsychick/docker-influxdb.svg?branch=master)](https://travis-ci.com/DrPsychick/docker-influxdb)

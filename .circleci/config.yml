@@ -16,7 +16,6 @@ aliases:
             mkdir -p /etc/docker
             docker_conf=$( (cat /etc/docker/daemon.json 2>/dev/null || echo "{}") |jq '. + {"experimental":"enabled"}')
             echo "$docker_conf" | tee /etc/docker/daemon.json
-            service docker restart
             service docker status
             sleep 10
       - run:

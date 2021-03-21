@@ -58,6 +58,11 @@ jobs:
       INFLUXDB_VERSION: alpine
     docker: *docker-ubuntu
     steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: install curl
+          command: apt update && apt install -y curl
       - docker-buildx/install
   build_18-alpine:
     parameters:

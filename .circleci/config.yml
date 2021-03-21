@@ -8,6 +8,7 @@ orbs:
 parameters:
   version:
     default: 0.5.1
+    type: string
 aliases:
   - &docker
       - image: docker:dind
@@ -16,6 +17,7 @@ aliases:
   - &steps
       - checkout
       - setup_remote_docker
+      - docker-buildx/install
       - run:
           name: Install docker buildx
           command: |
@@ -48,21 +50,37 @@ aliases:
             fi
 jobs:
   build_alpine:
+    parameters:
+      version:
+        default: 0.5.1
+        type: string
     environment:
       INFLUXDB_VERSION: alpine
     docker: *docker-ubuntu
     steps: *steps
   build_18-alpine:
+    parameters:
+      version:
+        default: 0.5.1
+        type: string
     environment:
       INFLUXDB_VERSION: 1.8-alpine
     docker: *docker
     steps: *steps
   build_17-alpine:
+    parameters:
+      version:
+        default: 0.5.1
+        type: string
     environment:
       INFLUXDB_VERSION: 1.7-alpine
     docker: *docker
     steps: *steps
   build_16-alpine:
+    parameters:
+      version:
+        default: 0.5.1
+        type: string
     environment:
       INFLUXDB_VERSION: 1.6-alpine
     docker: *docker
@@ -72,13 +90,7 @@ workflows:
   version: 2
   build:
     jobs:
-      - docker-buildx/install:
-          version: 0.5.1
-      - build_16-alpine:
-          version: 0.5.1
-      - build_17-alpine:
-          version: 0.5.1
-      - build_18-alpine:
-          version: 0.5.1
-      - build_alpine:
-          version: 0.5.1
+      - build_16-alpine
+      - build_17-alpine
+      - build_18-alpine
+      - build_alpine

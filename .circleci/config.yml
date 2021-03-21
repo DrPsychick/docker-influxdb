@@ -13,7 +13,7 @@ aliases:
           name: Prepare docker buildx
           command: |
             apk add --no-cache jq
-            docker_conf=$(cat /etc/docker/daemon.json |jq '. + {"experimental":"enabled"}')
+            docker_conf=$((cat /etc/docker/daemon.json 2>/dev/null || echo "{}") |jq '. + {"experimental":"enabled"}')
             echo "$docker_conf" | tee /etc/docker/daemon.json
             docker version
             docker buildx version

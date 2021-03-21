@@ -61,8 +61,8 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: install curl
-          command: apt update && apt install -y curl
+          name: install curl docker
+          command: apt update && apt install -y curl docker-ce
       - docker-buildx/install
   build_18-alpine:
     parameters:

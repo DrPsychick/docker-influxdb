@@ -62,7 +62,9 @@ jobs:
       - setup_remote_docker
       - run:
           name: install curl docker
-          command: apt update && apt install -y curl docker
+          command: |
+            export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true
+            apt update && apt install -y curl docker
       - docker-buildx/install
   build_18-alpine:
     parameters:

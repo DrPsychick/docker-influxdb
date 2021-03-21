@@ -19,7 +19,8 @@ aliases:
       - image: circleci/docker-gc:2.0
   - &steps
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 19.03.14
       - run:
           name: Install docker buildx
           command: |
@@ -38,7 +39,8 @@ aliases:
             docker version
             docker buildx version
             docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-            docker buildx create --name xbuilder --use
+            docker context create xbuilder
+            docker buildx create xbuilder --name xbuilder --use
             docker buildx inspect --bootstrap
       - run:
           name: Build all platforms
@@ -59,7 +61,9 @@ jobs:
         type: string
     environment:
       INFLUXDB_VERSION: alpine
-    docker: *circleci-docker
+    # docker: *circleci-docker
+    machine:
+      image: ubuntu-2004:202101-01
     steps:
       - checkout
       - setup_remote_docker

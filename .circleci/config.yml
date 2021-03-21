@@ -13,14 +13,10 @@ parameters:
 aliases:
   - &docker
       - image: docker:dind
-  - &docker-ubuntu
-      - image: ubuntu:latest
-  - &circleci-docker
-      - image: circleci/docker-gc:2.0
   - &steps
       - checkout
       - setup_remote_docker:
-          version: 19.03.14
+          version: 20.10.2
       - run:
           name: Install docker buildx
           command: |
@@ -61,18 +57,8 @@ jobs:
         type: string
     environment:
       INFLUXDB_VERSION: alpine
-    # docker: *circleci-docker
-    machine:
-      image: ubuntu-2004:202101-01
-    steps:
-      - checkout
-      - setup_remote_docker
-#      - run:
-#          name: install curl docker
-#          command: |
-#            export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true
-#            apt update && apt install -y curl docker
-      - docker-buildx/install
+    docker: *docker
+    steps: *steps
   build_18-alpine:
     parameters:
       version:

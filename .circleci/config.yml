@@ -95,8 +95,8 @@ workflows:
   build:
     triggers:
       - schedule:
-          # sundays, 6:03 am, UTC
-          cron: "3 6 * * 0"
+          # mondays, 6:03 am, UTC
+          cron: "3 6 * * 1"
           filters:
             branches:
               only:

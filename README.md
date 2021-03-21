@@ -1,4 +1,5 @@
 # [Docker image: influxdb](https://hub.docker.com/r/drpsychick/influxdb/)
+influxdb based on the official influxdb:alpine images, multiple architectures (amd64,arm64/v8), cloud ready, fully configurable through environment
 
 [![Docker image](https://img.shields.io/docker/image-size/drpsychick/influxdb?sort=date)](https://hub.docker.com/r/drpsychick/influxdb/tags) 
 [![Build Status](https://travis-ci.com/DrPsychick/docker-influxdb.svg?branch=master)](https://travis-ci.com/DrPsychick/docker-influxdb)
@@ -12,7 +13,6 @@
 [![Paypal](https://img.shields.io/badge/donate-paypal-00457c.svg?logo=paypal)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=FTXDN7LCDWUEA&source=url)
 [![GitHub Sponsor](https://img.shields.io/badge/github-sponsor-blue?logo=github)](https://github.com/sponsors/DrPsychick)
 
-influxdb based on influxdb:alpine image, fully configurable through environment
 
 ## Usage
 

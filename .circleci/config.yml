@@ -3,8 +3,6 @@
 # PLATFORMS
 # DOCKER_USER, DOCKER_PASS
 version: 2.1
-orbs:
-  docker-buildx: foodles/docker-buildx@0.0.1
 aliases:
   - &docker
       - image: docker:dind

@@ -2,6 +2,7 @@
 # REPO, IMAGE_NAME
 # PLATFORMS
 # DOCKER_USER, DOCKER_PASS
+
 version: 2.1
 orbs:
   docker-buildx: sensu/docker-buildx@1.1.1

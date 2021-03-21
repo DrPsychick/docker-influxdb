@@ -92,7 +92,7 @@ jobs:
 
 workflows:
   version: 2
-  build:
+  weekly:
     triggers:
       - schedule:
           # mondays, 6:03 am, UTC
@@ -101,6 +101,12 @@ workflows:
             branches:
               only:
                 - master
+    jobs:
+      - build_16-alpine
+      - build_17-alpine
+      - build_18-alpine
+      - build_alpine
+  build:
     jobs:
       - build_16-alpine
       - build_17-alpine

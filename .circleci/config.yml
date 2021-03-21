@@ -3,6 +3,9 @@
 # PLATFORMS
 # DOCKER_USER, DOCKER_PASS
 version: 2.1
+parameters:
+  version:
+    default: 0.5.1
 aliases:
   - &docker
       - image: docker:dind

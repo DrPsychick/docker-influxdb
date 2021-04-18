@@ -5,22 +5,22 @@
 version: 2.1
 aliases:
   - &docker
-      - image: docker:dind
+      - image: drpsychick/dind-buildx-helm:latest
   - &steps
       - checkout
       - setup_remote_docker:
           version: 20.10.2
-      - run:
-          name: Install docker buildx
-          command: |
-            apk add --no-cache curl
-            mkdir -p ~/.docker/cli-plugins
-            baseUrl="https://github.com/docker/buildx/releases/download"
-            fileName="buildx-v<< parameters.version >>.linux-amd64"
-            url="${baseUrl}/v<< parameters.version >>/${fileName}"
-            curl -sSL -o ~/.docker/cli-plugins/docker-buildx $url
-            chmod a+x ~/.docker/cli-plugins/docker-buildx
-            echo 'export DOCKER_CLI_EXPERIMENTAL="enabled"' >> $BASH_ENV
+#      - run:
+#          name: Install docker buildx
+#          command: |
+#            apk add --no-cache curl
+#            mkdir -p ~/.docker/cli-plugins
+#            baseUrl="https://github.com/docker/buildx/releases/download"
+#            fileName="buildx-v<< parameters.version >>.linux-amd64"
+#            url="${baseUrl}/v<< parameters.version >>/${fileName}"
+#            curl -sSL -o ~/.docker/cli-plugins/docker-buildx $url
+#            chmod a+x ~/.docker/cli-plugins/docker-buildx
+#            echo 'export DOCKER_CLI_EXPERIMENTAL="enabled"' >> $BASH_ENV
       - run:
           name: Prepare docker buildx
           command: |

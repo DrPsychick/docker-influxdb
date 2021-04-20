@@ -1,30 +1,24 @@
 # Required variables
 # REPO, IMAGE_NAME
-# PLATFORMS = linux/amd64,linux/arm64/v8,...
 # DOCKER_USER, DOCKER_PASS
 version: 2.1
 aliases:
+  - &parameters
+      platforms:
+        default: linux/amd64,linux/arm64
+        type: string
+      influxdb_version:
+        default: alpine
+        type: string
   - &docker
       - image: drpsychick/dind-buildx-helm:latest
   - &steps
       - checkout
       - setup_remote_docker:
           version: 20.10.2
-#      - run:
-#          name: Install docker buildx
-#          command: |
-#            apk add --no-cache curl
-#            mkdir -p ~/.docker/cli-plugins
-#            baseUrl="https://github.com/docker/buildx/releases/download"
-#            fileName="buildx-v<< parameters.version >>.linux-amd64"
-#            url="${baseUrl}/v<< parameters.version >>/${fileName}"
-#            curl -sSL -o ~/.docker/cli-plugins/docker-buildx $url
-#            chmod a+x ~/.docker/cli-plugins/docker-buildx
-#            echo 'export DOCKER_CLI_EXPERIMENTAL="enabled"' >> $BASH_ENV
       - run:
           name: Prepare docker buildx
           command: |
-            docker buildx install
             docker version
             docker buildx version
             docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
@@ -32,55 +26,17 @@ aliases:
             docker buildx create xbuilder --name xbuilder --use
             docker buildx inspect --bootstrap
       - run:
-          name: Build all platforms
-          command: |
-            docker buildx build --progress plain --platform $PLATFORMS --build-arg INLFUXDB_VERSION=$INFLUXDB_VERSION -t $REPO/$IMAGE_NAME:$TAG .
-      - run:
           name: Build and push all platforms
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin &> /dev/null || exit 1
-              docker buildx build --progress plain --platform $PLATFORMS --build-arg INLFUXDB_VERSION=$INFLUXDB_VERSION -t $REPO/$IMAGE_NAME:$TAG --push .
+              docker buildx build --progress plain --platform << parameters.platforms >> \
+                --build-arg INLFUXDB_VERSION=<< parameters.influxdb_version >> \
+                --tag $REPO/$IMAGE_NAME:<< parameters.influxdb_version >> --push .
             fi
 jobs:
-  build_alpine:
-    parameters:
-      version:
-        default: 0.5.1
-        type: string
-    environment:
-      INFLUXDB_VERSION: alpine
-      TAG: latest
-    docker: *docker
-    steps: *steps
-  build_20-alpine:
-    parameters:
-      version:
-        default: 0.5.1
-        type: string
-    environment:
-      INFLUXDB_VERSION: 2.0-alpine
-      TAG: 2.0-alpine
-    docker: *docker
-    steps: *steps
-  build_19-alpine:
-    parameters:
-      version:
-        default: 0.5.1
-        type: string
-    environment:
-      INFLUXDB_VERSION: 1.9-alpine
-      TAG: 1.9-alpine
-    docker: *docker
-    steps: *steps
-  build_18-alpine:
-    parameters:
-      version:
-        default: 0.5.1
-        type: string
-    environment:
-      INFLUXDB_VERSION: 1.8-alpine
-      TAG: 1.8-alpine
+  build:
+    parameters: *parameters
     docker: *docker
     steps: *steps
 
@@ -96,13 +52,15 @@ workflows:
               only:
                 - master
     jobs:
-      - build_18-alpine
-      - build_19-alpine
-      - build_20-alpine
-      - build_alpine
+      - build:
+          matrix:
+            parameters:
+              platforms: ["linux/amd64,linux/arm64"]
+              influxdb_version: ["1.8-alpine", "1.9-alpine", "2.0-alpine", "latest"]
   build:
     jobs:
-      - build_18-alpine
-      - build_19-alpine
-      - build_20-alpine
-      - build_alpine
+      - build:
+          matrix:
+            parameters:
+              platforms: ["linux/amd64,linux/arm64"]
+              influxdb_version: ["1.8-alpine", "1.9-alpine", "2.0-alpine", "latest"]

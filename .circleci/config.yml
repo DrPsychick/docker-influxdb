@@ -11,7 +11,7 @@ aliases:
         default: alpine
         type: string
   - &docker
-      - image: drpsychick/dind-buildx-helm:latest
+      - image: drpsychick/dind-buildx:latest
   - &steps
       - checkout
       - setup_remote_docker:

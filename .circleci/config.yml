@@ -31,10 +31,8 @@ aliases:
             docker buildx build --progress plain --platform linux/amd64 \
               --build-arg INLFUXDB_VERSION=<< parameters.influxdb_version >> \
               --tag $REPO/$IMAGE_NAME:test --load .
-            docker run --rm -it $REPO/$IMAGE_NAME:test cat /default.env > influxdb.env
-            cat influxdb.env
             docker run --rm -it $REPO/$IMAGE_NAME:test influxd version
-            docker run --rm -it --env-file influxdb.env $REPO/$IMAGE_NAME:test --test
+            docker run --rm -it --env-file test.env $REPO/$IMAGE_NAME:test --test
       - run:
           name: Build and push all platforms
           command: |

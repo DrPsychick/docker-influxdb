@@ -17,9 +17,10 @@ influxdb based on the official influxdb:alpine images, multiple architectures (a
 ## Usage
 
 ### UPDATE 2021-07-08 - BC breaking change!
-The image is now using a small go utility ([![toml_update](https://github.com/DrPsychick/toml_update)](https://github.com/DrPsychick/toml_update)) to read, modify and write a valid toml configuration file.
+The image is now using a small go utility ([toml_update](https://github.com/DrPsychick/toml_update)) to read, modify and write a valid toml configuration file.
 * no more multi-line variables
 * variable name order is no longer relevant
+* -> configuration environment is much simpler and more "readable"
 ```shell
 # before
 entrypoint_cmd=/entrypoint.sh

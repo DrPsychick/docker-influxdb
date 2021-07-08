@@ -14,10 +14,10 @@ env:
     - PLATFORMS=linux/amd64
     - DOCKER_CLI_EXPERIMENTAL=enabled
   matrix:
-#    - INFLUXDB_VERSION=2.0-alpine
+    - INFLUXDB_VERSION=2.0-alpine
+    - INFLUXDB_VERSION=1.9-alpine
     - INFLUXDB_VERSION=1.8-alpine
     - INFLUXDB_VERSION=1.7-alpine
-    - INFLUXDB_VERSION=1.6-alpine
 
 before_script:
   # upgrade to latest docker-ce from repo
@@ -42,7 +42,10 @@ script:
   - echo "Alpine $ALPINE_VERSION influxd $INFLUXDB_VERSION"
   - >
     echo "Running tests...";
+    docker run --rm -it $IMAGE cat /default.env > influxdb.env
     docker run --rm $IMAGE influxd version
+    docker run --rm -it --env-file influxdb.env $IMAGE --test
+
 
 # push images to docker hub
 after_success:

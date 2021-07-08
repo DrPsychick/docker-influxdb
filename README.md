@@ -16,25 +16,51 @@ influxdb based on the official influxdb:alpine images, multiple architectures (a
 
 ## Usage
 
+### UPDATE 2021-07-08 - BC breaking change!
+The image is now using a small go utility ([toml_update](https://github.com/DrPsychick/toml_update)) to read, modify and write a valid toml configuration file.
+* no more multi-line variables
+* variable name order is no longer relevant
+* -> configuration environment is much simpler and more "readable"
+```shell
+# before
+entrypoint_cmd=/entrypoint.sh
+conf_templates="influxdb.conf.tmpl:/etc/influxdb/influxdb.conf"
+conf_var_prefix=IFX_
+# can be overwritten, to add names or to reorder names
+conf_vars_influxconf=${conf_vars_influxconf:-'IFX_GLOBAL IFX_META IFX_DATA IFX_COORDINATOR IFX_RETENTION IFX_SHARD-PRECREATION IFX_MONITOR IFX_SUBSCRIBER IFX_HTTP IFX_GRAPHITE IFX_COLLECTD IFX_OPENTSDB IFX_UDP IFX_CONTINUOUS_QUERIES'}
+IFX_GLOBAL=reporting-disabled = false
+IFX_COORDINATOR=[coordinator]
+IFX_COORDINATOR_BASE=write-timeout = "30s"\nmax-concurrent-queries = 10\nquery-timeout = "600s"\nlog-queries-after = "10s"
+# after
+CONF_UPDATE=/etc/influxdb/influxdb.conf
+CONF_PREFIX=IFX
+IFX_GLOBAL1=reporting-disabled=false
+IFX_COORDINATOR1=coordinator.write-timeout="30s"
+IFX_COORDINATOR2=coordinator.max-concurrent-queries=10
+IFX_COORDINATOR3=coordinator.query-timeout="600s"
+IFX_COORDINATOR_WHATEVER=coordinator.log-queries-after="10s"
+```
+
 Try it in 3 steps
 
 ### 1 create your own influxdb.env
 ```
-docker run --rm -it drpsychick/influxdb:latest --test
-docker run --rm -it drpsychick/influxdb:latest --export > influxdb.env
+docker run --rm -it drpsychick/influxdb:latest cat /default.env > influxdb.env
+# check default configuration:
+docker run --rm -it --env-file influxdb.env --name influxdb-1 drpsychick/influxdb:latest influxd config
 ```
 
 ### 2 configure it
 Edit settings in `influxdb.env` to your needs:
+* do not use spaces after the first `=` unless in quotes
 ```
-IFX_GLOBAL=reporting-disabled = true
+IFX_GLOBAL=reporting-disabled=true
 ```
 
 ### 3 test and run it
 Run in a separate teminal
 ```
 docker run --rm -it --env-file influxdb.env --name influxdb-1 drpsychick/influxdb:latest --test
-docker run --rm -it --env-file influxdb.env --name influxdb-1 drpsychick/influxdb:latest influxd config
 docker run --rm -it --env-file influxdb.env --name influxdb-1 --publish 8086:8086 drpsychick/influxdb:latest
 ```
 
@@ -48,12 +74,10 @@ You can use any `IFX_` variable in your `influxdb.env`. They will be added to th
 
 ### Example 
 ```
-IFX_COORDINATOR=[coordinator]
-IFX_COORDINATOR_BASE=write-timeout = "30s"\nmax-concurrent-queries = 10\nquery-timeout = "600s"\nlog-queries-after = "10s"
+IFX_VAR1=coordinator.write-timeout="30s"
+IFX_ANY_OTHER_NAME=coordinator.max-concurrent-queries=10
 ```
 
 **Beware**:
 
 Docker only support *simple variables*. No ", no ' and especially no newlines in variables.
-To define a multiline variable, look at the `IFX_COORDINATOR_BASE` variable in the example.
-

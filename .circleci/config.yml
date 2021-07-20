@@ -39,7 +39,7 @@ aliases:
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin &> /dev/null || exit 1
               export TAG=<< parameters.influxdb_version >>
-              if [ "$TAG" = "1.8-alpine" ]; then
+              if [ "$TAG" = "1.8" ]; then
                 export TAG=latest
               fi
               docker buildx build --progress plain --platform << parameters.platforms >> \
@@ -67,12 +67,12 @@ workflows:
       - build:
           matrix:
             parameters:
-              platforms: ["linux/amd64"]
-              influxdb_version: ["1.8-alpine", "1.7-alpine"]
+              platforms: ["linux/amd64","linux/arm64"]
+              influxdb_version: ["1.8", "1.7"]
   build:
     jobs:
       - build:
           matrix:
             parameters:
-              platforms: ["linux/amd64"]
-              influxdb_version: ["1.8-alpine", "1.7-alpine"]
+              platforms: ["linux/amd64","linux/arm64"]
+              influxdb_version: ["1.8", "1.7"]

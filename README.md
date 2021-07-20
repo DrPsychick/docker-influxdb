@@ -1,5 +1,5 @@
 # [Docker image: influxdb](https://hub.docker.com/r/drpsychick/influxdb/)
-influxdb based on the official influxdb:alpine images, multiple architectures (amd64,arm64/v8), cloud ready, fully configurable through environment
+influxdb based on the official influxdb images, multiple architectures (amd64,arm64/v8), cloud ready, fully configurable through environment
 
 [![Docker image](https://img.shields.io/docker/image-size/drpsychick/influxdb?sort=date)](https://hub.docker.com/r/drpsychick/influxdb/tags) 
 [![Build Status](https://img.shields.io/circleci/build/github/DrPsychick/docker-influxdb)](https://app.circleci.com/pipelines/github/DrPsychick/docker-influxdb)
@@ -17,7 +17,7 @@ influxdb based on the official influxdb:alpine images, multiple architectures (a
 ## Usage
 
 ### UPDATE 2021-07-08 - BC breaking change!
-The image is now using a small go utility ([toml_update](https://github.com/DrPsychick/toml_update)) to read, modify and write a valid toml configuration file.
+The image is now using non-alpine base images and a small go utility ([toml_update](https://github.com/DrPsychick/toml_update)) to read, modify and write a valid toml configuration file.
 * no more multi-line variables
 * variable name order is no longer relevant
 * -> configuration environment is much simpler and more "readable"

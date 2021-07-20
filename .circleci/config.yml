@@ -67,12 +67,12 @@ workflows:
       - build:
           matrix:
             parameters:
-              platforms: ["linux/amd64","linux/arm64"]
+              platforms: ["linux/amd64,linux/arm64"]
               influxdb_version: ["1.8", "1.7"]
   build:
     jobs:
       - build:
           matrix:
             parameters:
-              platforms: ["linux/amd64","linux/arm64"]
+              platforms: ["linux/amd64,linux/arm64"]
               influxdb_version: ["1.8", "1.7"]

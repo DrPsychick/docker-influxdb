@@ -1,8 +1,6 @@
 ARG INFLUXDB_VERSION=1.8-alpine
 FROM influxdb:$INFLUXDB_VERSION
 
-RUN apk add --no-cache curl
-
 ARG TARGETARCH
 ARG TOML_URL=https://github.com/DrPsychick/toml_update/releases
 ARG TOML_VERSION=0.0.7

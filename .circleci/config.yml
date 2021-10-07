@@ -39,12 +39,16 @@ aliases:
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin &> /dev/null || exit 1
               export TAG=<< parameters.influxdb_version >>
-              if [ "$TAG" = "1.8" ]; then
-                export TAG=latest
-              fi
               docker buildx build --progress plain --platform << parameters.platforms >> \
                 --build-arg INFLUXDB_VERSION=<< parameters.influxdb_version >> \
                 --tag $REPO/$IMAGE_NAME:$TAG --push .
+              
+              if [ "$TAG" = "1.8" ]; then
+                export TAG=latest
+                docker buildx build --progress plain --platform << parameters.platforms >> \
+                --build-arg INFLUXDB_VERSION=<< parameters.influxdb_version >> \
+                --tag $REPO/$IMAGE_NAME:$TAG --push .
+              fi
             fi
 jobs:
   build:
